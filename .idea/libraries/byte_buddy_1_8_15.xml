@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="byte-buddy-1.8.15">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/selenium-java-3.141.59/libs/byte-buddy-1.8.15.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

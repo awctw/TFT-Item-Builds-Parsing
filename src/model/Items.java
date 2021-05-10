@@ -7,6 +7,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -91,8 +94,6 @@ public class Items {
 
             }
 
-
-
             System.out.println(specChampsNeededItems);
 
 
@@ -102,9 +103,48 @@ public class Items {
 
     }
 
+    private ArrayList<String> getCombinedItemIngredients(String champ) {
+        return specChampsNeededItems.get(champ);
+    }
+
+    //maybe make it so that only the main carries are returned for each comp
+    private ArrayList<String> getPossibleCombinedItems(String baseItem) {
+        ArrayList<String> listOfPossibleChampions = new ArrayList<>();
+
+            for (Map.Entry<String, ArrayList<String>> entry : specChampsNeededItems.entrySet()) {
+
+                    if (entry.getValue().contains(baseItem)) {
+                        listOfPossibleChampions.add(entry.getKey());
+                    }
+            }
+
+        return listOfPossibleChampions;
+    }
+
+    private void writeToFile() {
+
+        File file = new File("data/info.html");
+
+        try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {
+
+            for (Map.Entry<String, ArrayList<String>> entry : specChampsNeededItems.entrySet()) {
+
+                String keys = entry.getKey().replaceAll("https://app.mobalytics.gg/tft/champions/","");
+                bf.write(keys + ":" + entry.getValue());
+                bf.newLine();
+            }
+
+            bf.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void parse() throws IOException {
         parseTeams();
 
         parseChampions();
+        writeToFile();
+        //System.out.println(getPossibleCombinedItems("needlessly-large-rod"));
     }
 }
